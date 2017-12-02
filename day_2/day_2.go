@@ -8,6 +8,14 @@ import (
 	"strings"
 )
 
+func strToInt(str string) int {
+	val, err := strconv.Atoi(str)
+	if err != nil {
+		panic(err)
+	}
+	return val
+}
+
 func readLines(path string) ([]string, error) {
 	file, err := os.Open(path)
 	if err != nil {
@@ -24,17 +32,11 @@ func readLines(path string) ([]string, error) {
 }
 
 func minMaxDifference(row []string) int {
-	firstVal, err := strconv.Atoi(row[0])
-	if err != nil {
-		panic(err)
-	}
+	firstVal := strToInt(row[0])
 	largest := firstVal
 	smallest := firstVal
 	for _, char := range row {
-		num, err := strconv.Atoi(char)
-		if err != nil {
-			panic(err)
-		}
+		num := strToInt(char)
 		if num > largest {
 			largest = num
 		} else if num < smallest {
@@ -46,15 +48,9 @@ func minMaxDifference(row []string) int {
 
 func evenlyDivisibleDifference(row []string) int {
 	for idx := 0; idx < len(row); idx++ {
-		num1, err := strconv.Atoi(row[idx])
-		if err != nil {
-			panic(err)
-		}
+		num1 := strToInt(row[idx])
 		for idy := 1; idy < len(row); idy++ {
-			num2, err := strconv.Atoi(row[(idx+idy)%len(row)])
-			if err != nil {
-				panic(err)
-			}
+			num2 := strToInt(row[(idx+idy)%len(row)])
 			if num1%num2 == 0 {
 				return num1 / num2
 			}
