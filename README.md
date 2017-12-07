@@ -312,3 +312,42 @@ func twistyTrampolines2(filename string) int {
 	return twistyTrampolines(filename, postJumpAdjustment2)
 }
 ```
+
+### Day 6
+```go
+func getMaxIdx(numbers []int) int {
+	maxIdx := 0
+	for idx, num := range numbers {
+		if num > numbers[maxIdx] {
+			maxIdx = idx
+		}
+	}
+	return maxIdx
+}
+
+func memoryReallocation(filename string) (int, int) {
+	contents, err := ioutil.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
+	intChars := strings.Fields(string(contents))
+	numbers := []int{}
+	for _, char := range intChars {
+		numbers = append(numbers, strToInt(char))
+	}
+	seen := map[string]int{}
+	cycles := 0
+	for !isRepeat(seen, numbers) {
+		seen[h(numbers)] = cycles
+
+		maxIdx := getMaxIdx(numbers)
+		maxVal := numbers[maxIdx]
+		numbers[maxIdx] = 0
+		for idx := 0; idx < maxVal; idx++ {
+			numbers[(maxIdx+1+idx)%len(numbers)]++
+		}
+		cycles++
+	}
+	return cycles, cycles - seen[h(numbers)]
+}
+```
